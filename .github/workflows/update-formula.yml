@@ -1,0 +1,33 @@
+name: create PR to update formula
+
+on:
+  push:
+    branches:
+      - imgpkg-homebrew
+permissions:
+  pull-requests: write
+  contents: none
+  actions: none
+  checks: none
+  deployments: none
+  issues: none
+  packages: none
+  repository-projects: none
+  security-events: none
+  statuses: none
+jobs:
+  update-imgpkg-homebrew:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        repository: vmware-tanzu/homebrew-carvel
+        ref: develop
+    - name: pull-request
+      uses: repo-sync/pull-request@65194d8015be7624d231796ddee1cd52a5023cb3
+      with:
+        source_branch: "imgpkg-homebrew"
+        destination_branch: "develop"
+        pr_title: "Update imgpkg homebrew Formula: ${{ github.ref }}"
+        github_token: ${{ secrets.GITHUB_TOKEN }}
